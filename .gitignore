@@ -20,6 +20,7 @@ bin/
 
 ### IntelliJ IDEA ###
 /backend/.idea
+/.idea
 *.iws
 *.iml
 *.ipr
@@ -36,6 +37,7 @@ bin/
 
 ### VS Code ###
 /backend/.vscode/
+/.vscode
 
 ### DB ###
 /backend/src/main/resources/application.yml
