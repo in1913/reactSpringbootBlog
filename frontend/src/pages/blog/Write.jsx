@@ -122,7 +122,6 @@ const Write = () => {
 
     const handleSubmit = async () => {
         await axios.post('/api/write',{
-            mememail : session[0]["mememail"], 
             classification: classification, 
             title: title, 
             content: content, 

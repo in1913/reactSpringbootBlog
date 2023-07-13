@@ -1,14 +1,13 @@
 package com.inyoungserver.react.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.inyoungserver.react.dto.CommentDto;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.inyoungserver.react.dto.BlogDto;
 import com.inyoungserver.react.service.BlogService;
@@ -24,9 +23,10 @@ public class BlogController {
     private final BlogService blogService;
 
     @PostMapping("/api/write")
-    public ResponseEntity <String> write(@RequestBody BlogDto blogDto){
-        System.out.println("BlogDto = " + blogDto);
-        blogService.save(blogDto);
+    public ResponseEntity <String> write(@RequestBody BlogDto blogDto, HttpSession session){
+        String mememail = (String) session.getAttribute("mememail");
+        System.out.println("MEMEMAIL" + mememail);
+        blogService.save(blogDto, mememail);
         return ResponseEntity.ok().body("Success");
     }
 

@@ -3,15 +3,7 @@ package com.inyoungserver.react.entity;
 import com.inyoungserver.react.dto.BlogDto;
 import com.inyoungserver.react.dto.MemberDto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +11,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name="blog")
-public class BlogEntity extends BlogTimeEntity{
+public class BlogEntity extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int num;
@@ -44,16 +36,17 @@ public class BlogEntity extends BlogTimeEntity{
     private int hits;
 
     
-    public static BlogEntity toSaveEntity(BlogDto blogDto){
+    public static BlogEntity toSaveEntity(BlogDto blogDto, String mememail){
         BlogEntity blogEntity = new BlogEntity();
-        MemberDto memberDto = new MemberDto();
-        MemberEntity memberEntity = blogEntity.getMemberEntity();
-        memberEntity.setMememail(memberDto.getMememail());
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMememail(mememail);
+
         blogEntity.setClassification(blogDto.getClassification());
         blogEntity.setTitle(blogDto.getTitle());
         blogEntity.setContent(blogDto.getContent());
         blogEntity.setTags(blogDto.getTags());
         blogEntity.setHits(0);
+        blogEntity.setMemberEntity(memberEntity);
         return blogEntity;
     }
 }

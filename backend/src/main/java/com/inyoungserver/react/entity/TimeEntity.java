@@ -14,7 +14,7 @@ import lombok.Getter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public class BlogTimeEntity {
+public class TimeEntity {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdTime;

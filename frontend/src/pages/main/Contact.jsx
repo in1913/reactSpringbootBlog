@@ -20,7 +20,7 @@ const Name = styled.span`
     position: absolute;
     top: -5px;
     left:0;
-    color: #fff;
+    color: transparent;
     transition: all 0.3s;
     font-weight: 600;
 `

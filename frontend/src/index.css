@@ -28,6 +28,10 @@ input::placeholder{
     font-size: 16px;
     color: #ccc;
 }
+textarea::placeholder{
+    font-size: 16px;
+    color: #ccc;
+}
 input.write-title::placeholder{
     font-size: 24px;
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.inyoungserver.react.dto.MemberDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +23,8 @@ public class BlogService {
     private final BlogRepository blogRepository;
 
     @Transactional
-    public void save(BlogDto blogDto){
-        BlogEntity blogEntity = BlogEntity.toSaveEntity(blogDto);
+    public void save(BlogDto blogDto, String mememail){
+        BlogEntity blogEntity = BlogEntity.toSaveEntity(blogDto, mememail);
         blogRepository.save(blogEntity);
     }
 

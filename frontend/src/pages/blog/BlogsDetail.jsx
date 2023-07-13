@@ -7,6 +7,8 @@ import Header from '../../components/blog/Header';
 import {RxDotsVertical} from 'react-icons/rx';
 import {HiOutlinePencil, HiOutlineTrash} from 'react-icons/hi';
 import Colors from '../../assets/CategoryColor';
+import Comment from '../../components/blog/Comment';
+import Footer from '../../components/main/Footer';
 
 const Category = styled.div`
     color: #fff;
@@ -131,20 +133,22 @@ const BlogsDetail = () => {
         <>
         <Header/>
         <Container style={{paddingTop: "120px"}}>
+            <CreatDate className='me-3'>{createdTime}</CreatDate>
             <Category style={{background : bgImg}} className='rounded-pill'>
-                {blog[0]["classification"]}
+            {blog[0]["classification"]}
             </Category>
             <Title className=' mt-4 mb-4' >
                 {blog[0]["title"]}
             </Title>
+
+            {/* writer info */}
             <Row>
-                <Col xs={12} className='d-flex mb-3 align-items-center justify-content-between'>
+                <Col xs={12} className='d-flex my-3 align-items-center justify-content-between'>
                     <span className='d-flex align-items-center'>
                         <MyImgBox>
                             <MyImg src={photo_url} alt='writer'/>
                         </MyImgBox>
                         <MemName className='ms-3'>{memname}</MemName>
-                        <CreatDate className='ms-3'>{createdTime}</CreatDate>
                     </span>
                     <span className='position-relative'>
                         <Button className='mb-2' onClick={handleUtilButton}><RxDotsVertical/></Button>
@@ -163,9 +167,9 @@ const BlogsDetail = () => {
                     </span>
                 </Col>
             </Row>
-            <hr />
             <Row>
-                <Col xs={12} className='p-5'>
+                {/* blog content */}
+                <Col xs={12} className='py-5'>
                     <div id="blog-content">
                     </div>
                 </Col>
@@ -174,10 +178,12 @@ const BlogsDetail = () => {
                 </Col>
             </Row>
             <hr />
+                {/* comment */}
             <Row>
-                    
+                <Comment num={num}/>
             </Row>
         </Container>
+        <Footer/>
         </>
     );
 };
