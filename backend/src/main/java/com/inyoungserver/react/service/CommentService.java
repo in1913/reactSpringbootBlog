@@ -25,7 +25,7 @@ public class CommentService {
 
     public List <CommentDto> getCommentWithBlog(int blog_num){
         BlogEntity blogEntity = new BlogEntity();
-        blogEntity.setNum(blog_num);
+        blogEntity.setBlog_num(blog_num);
         Optional <List <CommentEntity>> optionalCommentEntityList = commentRepository.findByBlogEntity(blogEntity);
         if(optionalCommentEntityList.isPresent()){
             List <CommentEntity> commentEntityList = optionalCommentEntityList.get();

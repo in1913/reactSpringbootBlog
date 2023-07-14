@@ -92,25 +92,28 @@ const BlogsDetail = () => {
     };
 
     // 블로그 데이터 가져오기
-    const [blog, setBlog] = useState([{}]);
     const [category, setCategory] = useState("");
     const [photo_url, setPhoto_url] = useState("");
     const [memname, setMemname] = useState("");
     const [createdTime, setCreatedTime] = useState("");
     const [tags, setTags] = useState([]);
+    const [title, setTitle] = useState("");
 
     useEffect(() => {
         const blogData = async () => {
             const response = await axios.get(`/api/blog/${num}`);
             if(response.data !== ""){
-                setBlog(response.data);
-                setCategory(response.data[0]["classification"]);
-                setPhoto_url(response.data[0]["memberDto"].photo_url);
-                setMemname(response.data[0]["memberDto"].memname);
-                setCreatedTime(response.data[0]["createdTime"].substring(0, 16).replace(/-/g, ".").replace("T", " "));
-                setTags(response.data[0]["tags"].split(','));
+                setPhoto_url(response.data[0]["photo_url"]);
+                setMemname(response.data[0]["memname"]);
+                setCategory(response.data[1]["classification"]);
 
-                document.getElementById('blog-content').innerHTML = response.data[0]["content"];
+                setCreatedTime(response.data[1]["createdTime"].substring(0, 16).replace(/-/g, ".").replace("T", " "));
+                if(response.data[1]["tags"] !== ""){
+                    setTags(response.data[1]["tags"].split(','));
+                }
+                setTitle(response.data[1]["title"]);
+                document.getElementById('blog-content').innerHTML = response.data[1]["content"];
+
             }else{
             }
         };
@@ -120,12 +123,14 @@ const BlogsDetail = () => {
 
     // 태그 뿌리기  
     let tagList = [];
+
     for(let tag in tags){
         tagList.push(<Tags className='px-2 py-1 rounded me-1 mb-1' key={tag}>
             # {tags[tag]}
         </Tags>)
     }
-    
+
+
     // 카테고리 색 넣기
     const bgImg = "linear-gradient(45deg, " + Colors[0][category] + ")";
     
@@ -135,10 +140,10 @@ const BlogsDetail = () => {
         <Container style={{paddingTop: "120px"}}>
             <CreatDate className='me-3'>{createdTime}</CreatDate>
             <Category style={{background : bgImg}} className='rounded-pill'>
-            {blog[0]["classification"]}
+            {category}
             </Category>
             <Title className=' mt-4 mb-4' >
-                {blog[0]["title"]}
+                {title}
             </Title>
 
             {/* writer info */}

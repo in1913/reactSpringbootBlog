@@ -1,10 +1,13 @@
 package com.inyoungserver.react.service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.inyoungserver.react.dto.MemberDto;
+import com.inyoungserver.react.entity.MemberEntity;
+import com.inyoungserver.react.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +24,11 @@ import lombok.RequiredArgsConstructor;
 public class BlogService {
 
     private final BlogRepository blogRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public void save(BlogDto blogDto, String mememail){
-        BlogEntity blogEntity = BlogEntity.toSaveEntity(blogDto, mememail);
+    public void save(BlogDto blogDto){
+        BlogEntity blogEntity = BlogEntity.toEntity(blogDto);
         blogRepository.save(blogEntity);
     }
 
@@ -32,19 +36,25 @@ public class BlogService {
         List <BlogEntity> blogEntityList = blogRepository.findAll();
         List <BlogDto> blogDtoList = new ArrayList <> ();
         for(BlogEntity blogEntity : blogEntityList){
-            blogDtoList.add(BlogDto.toSaveDto(blogEntity));
+            blogDtoList.add(BlogDto.toDto(blogEntity));
         }
         return blogDtoList;
     }
 
-    public List <BlogDto> getBlogWithMember(int num){
-        Optional <BlogEntity> optionalBlogEntity =  blogRepository.getBlogWithMember(num);
+    public List <Object> getBlogWithMember(int num){
+        Optional <BlogEntity> optionalBlogEntity =  blogRepository.findById(num);
         if(optionalBlogEntity.isPresent()){
             BlogEntity blogEntity = optionalBlogEntity.get();
-            BlogDto blogDto = BlogDto.getBlogWithMember(blogEntity);
-            List <BlogDto> blogDtoList = new ArrayList<>();
-            blogDtoList.add(blogDto);
-            return blogDtoList;
+            Optional <MemberEntity> optionalMemberEntity = memberRepository.findByMememail(blogEntity.getMememail());
+            if(optionalMemberEntity.isPresent()){
+                MemberEntity memberEntity = optionalMemberEntity.get();
+                List <Object> dtoList = new ArrayList<>();
+                dtoList.add(MemberDto.toDto(memberEntity));
+                dtoList.add(BlogDto.toDto(blogEntity));
+                return dtoList;
+            }else{
+                return null;
+            }
         }else{
             return null;
         }

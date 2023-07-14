@@ -1,8 +1,8 @@
 package com.inyoungserver.react.entity;
 
 import com.inyoungserver.react.dto.BlogDto;
-import com.inyoungserver.react.dto.MemberDto;
 
+import com.inyoungserver.react.repository.MemberRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,11 +14,10 @@ import lombok.Setter;
 public class BlogEntity extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int num;
+    private int blog_num;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mememail", referencedColumnName = "mememail")
-    private MemberEntity memberEntity;
+    @Column
+    private String mememail;
 
     @Column 
     private String classification;
@@ -35,18 +34,16 @@ public class BlogEntity extends TimeEntity {
     @Column
     private int hits;
 
-    
-    public static BlogEntity toSaveEntity(BlogDto blogDto, String mememail){
+    // dto to entity
+    public static BlogEntity toEntity(BlogDto blogDto){
         BlogEntity blogEntity = new BlogEntity();
-        MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setMememail(mememail);
-
+        blogEntity.setMememail(blogDto.getMememail());
         blogEntity.setClassification(blogDto.getClassification());
         blogEntity.setTitle(blogDto.getTitle());
         blogEntity.setContent(blogDto.getContent());
         blogEntity.setTags(blogDto.getTags());
-        blogEntity.setHits(0);
-        blogEntity.setMemberEntity(memberEntity);
+        blogEntity.setHits(blogDto.getHits());
         return blogEntity;
     }
+
 }

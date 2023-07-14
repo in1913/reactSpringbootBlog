@@ -23,7 +23,12 @@ public class BlogManageController {
     @GetMapping("/api/blogmanage")
     public ResponseEntity <List <BlogManageDto>> findAll(){
         List <BlogManageDto> blogManageDtoList = blogManageService.findAll();
-        return ResponseEntity.ok().body(blogManageDtoList);
+        if(blogManageDtoList.size() == 0){
+            return ResponseEntity.ok().body(null);
+        }else{
+            return ResponseEntity.ok().body(blogManageDtoList);
+        }
+
     }
     
     @PostMapping("/api/blogupdate")

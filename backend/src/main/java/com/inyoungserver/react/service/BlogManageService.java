@@ -37,7 +37,11 @@ public class BlogManageService {
             blogManageDtoList.add(BlogManageDto.toSaveBlogManageDto(updatedBlogManageEntity));
             return blogManageDtoList;
         }else{
-            return null;
+            BlogManageEntity blogManageEntity = BlogManageEntity.toSaveEntity(blogManageDto);
+            blogManageRepository.save(blogManageEntity);
+            List <BlogManageDto> blogManageDtoList = new ArrayList <> ();
+            blogManageDtoList.add(BlogManageDto.toSaveBlogManageDto(blogManageEntity));
+            return blogManageDtoList;
         }
     }
 }

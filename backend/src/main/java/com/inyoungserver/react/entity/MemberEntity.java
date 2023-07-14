@@ -18,8 +18,8 @@ public class MemberEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int num;
 
-    @OneToMany(mappedBy = "mememail", cascade = CascadeType.ALL)
-    private List<BlogEntity> blogEntityList = new ArrayList<>();
+    @Column(unique = true)
+    private String mememail;
 
     @Column
     private String mempass;
@@ -42,12 +42,12 @@ public class MemberEntity {
     @Column
     private String photo_url;
 
-    public static MemberEntity toMemberEntity(MemberDto memberDto){
+    // dto to entity
+    public static MemberEntity toEntity(MemberDto memberDto){
         MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setNum(memberDto.getNum());
         memberEntity.setMememail(memberDto.getMememail());
-        memberEntity.setMemname(memberDto.getMemname());
         memberEntity.setMempass(memberDto.getMempass());
+        memberEntity.setMemname(memberDto.getMemname());
         memberEntity.setBirth(memberDto.getBirth());
         memberEntity.setAddress(memberDto.getAddress());
         memberEntity.setTel(memberDto.getTel());
@@ -57,6 +57,12 @@ public class MemberEntity {
     }
 
     public static MemberEntity toUpdateEntity(MemberEntity memberEntity, MemberDto memberDto){
+        if(!memberDto.getMememail().isEmpty()){
+            memberEntity.setMememail(memberDto.getMememail());
+        }
+        if(!memberDto.getMempass().isEmpty()){
+            memberEntity.setMempass(memberDto.getMempass());
+        }
         if(!memberDto.getMemname().isEmpty()){
             memberEntity.setMemname(memberDto.getMemname());
         }
@@ -75,12 +81,7 @@ public class MemberEntity {
         if(!memberDto.getPhoto_url().isEmpty()){
             memberEntity.setPhoto_url(memberDto.getPhoto_url());
         }
-        if (!memberDto.getMempass().isEmpty()) {
-            memberEntity.setMempass(memberDto.getMempass());            
-        }
-        
         return memberEntity;
-        
     }
 
 }

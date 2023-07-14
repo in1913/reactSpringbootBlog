@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class CommentDto {
-    private int num;
+    private int cmt_num;
     private String nickname;
     private String password;
     private String commentemail;
@@ -25,9 +25,9 @@ public class CommentDto {
         CommentDto commentDto = new CommentDto();
         BlogDto blogDto = new BlogDto();
         BlogEntity blogEntity = commentEntity.getBlogEntity();
-        commentDto.setNum(commentDto.getNum());
-        blogDto.setNum(blogEntity.getNum());
-        commentDto.setNum(commentEntity.getNum());
+        commentDto.setCmt_num(commentDto.getCmt_num());
+        blogDto.setBlog_num(blogEntity.getBlog_num());
+        commentDto.setCmt_num(commentEntity.getCmt_num());
         commentDto.setNickname(commentEntity.getNickname());
         commentDto.setCreatedTime(commentEntity.getCreatedTime());
         commentDto.setUpdatedTime(commentEntity.getUpdatedTime());

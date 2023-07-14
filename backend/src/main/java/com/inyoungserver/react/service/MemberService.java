@@ -18,17 +18,12 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public void save(MemberDto memberDto){
-        MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDto);
-        memberRepository.save(memberEntity);
-    }
-
     public MemberDto login(MemberDto memberDto){
         Optional <MemberEntity> byMememail  = memberRepository.findByMememail(memberDto.getMememail());
         if(byMememail.isPresent()){
             MemberEntity memberEntity = byMememail.get();
             if(memberEntity.getMempass().equals((memberDto.getMempass()))){
-                MemberDto dto = MemberDto.toMemberDto(memberEntity);
+                MemberDto dto = MemberDto.toDto(memberEntity);
                 return dto;
             }else{
                 return null;
@@ -42,7 +37,7 @@ public class MemberService {
         Optional <MemberEntity> byMememail  = memberRepository.findByMememail(mememail);
         if(byMememail.isPresent()){
             MemberEntity memberEntity = byMememail.get();       
-            MemberDto dto = MemberDto.getMemInfo(memberEntity);
+            MemberDto dto = MemberDto.toDto(memberEntity);
             List <MemberDto> memberDtoList = new ArrayList <> ();
             memberDtoList.add(dto);
             return memberDtoList;
@@ -59,10 +54,14 @@ public class MemberService {
             MemberEntity updatedMemberEntity = MemberEntity.toUpdateEntity(memberEntity, memberDto);
             memberRepository.save(updatedMemberEntity);
             List <MemberDto> memberDtoList = new ArrayList <> ();
-            memberDtoList.add(MemberDto.toMemberDto(updatedMemberEntity));
+            memberDtoList.add(MemberDto.toDto(updatedMemberEntity));
             return memberDtoList;
         }else{
-            return null;
+            MemberEntity memberEntity = MemberEntity.toEntity(memberDto);
+            memberRepository.save(memberEntity);
+            List <MemberDto> memberDtoList = new ArrayList <> ();
+            memberDtoList.add(MemberDto.toDto(memberEntity));
+            return memberDtoList;
         }
     }
 }

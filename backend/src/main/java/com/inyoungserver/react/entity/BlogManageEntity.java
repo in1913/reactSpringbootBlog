@@ -32,6 +32,14 @@ public class BlogManageEntity {
     @Column
     private String classification;
 
+    public static BlogManageEntity toSaveEntity(BlogManageDto blogManageDto){
+        BlogManageEntity blogManageEntity = new BlogManageEntity();
+        blogManageEntity.setBlog_name(blogManageDto.getBlog_name());
+        blogManageEntity.setClassification(blogManageDto.getClassification());
+        blogManageEntity.setBlog_owner_name(blogManageDto.getBlog_owner_name());
+        blogManageEntity.setPhoto_url(blogManageDto.getPhoto_url());
+        return blogManageEntity;
+    }
     public static BlogManageEntity toUpdateManageEntity(BlogManageEntity blogManageEntity, BlogManageDto blogManageDto){
         if(!blogManageDto.getBlog_name().isEmpty()){
             blogManageEntity.setBlog_name(blogManageDto.getBlog_name());

@@ -14,10 +14,10 @@ import lombok.Setter;
 public class CommentEntity extends TimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int num;
+    private int cmt_num;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "blog_num", referencedColumnName = "num")
+    @JoinColumn(name = "blog_num", referencedColumnName = "blog_num")
     private BlogEntity blogEntity;
 
     @Column
@@ -35,7 +35,7 @@ public class CommentEntity extends TimeEntity{
     public static CommentEntity toSaveEntity(int blog_num, CommentDto commentDto){
         CommentEntity commentEntity = new CommentEntity();
         BlogEntity blogEntity = new BlogEntity();
-        blogEntity.setNum(blog_num);
+        blogEntity.setBlog_num(blog_num);
         commentEntity.setBlogEntity(blogEntity);
         commentEntity.setNickname(commentDto.getNickname());
         commentEntity.setPassword(commentDto.getPassword());

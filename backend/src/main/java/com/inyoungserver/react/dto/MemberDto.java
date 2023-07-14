@@ -24,23 +24,9 @@ public class MemberDto {
     private String education;
     private String photo_url;
 
-    public static MemberDto toMemberDto(MemberEntity memberEntity){
+    // entity to dto 값 가져오기
+    public static MemberDto toDto(MemberEntity memberEntity){
         MemberDto memberDto = new MemberDto();
-        memberDto.setNum(memberEntity.getNum());
-        memberDto.setMememail(memberEntity.getMememail());
-        memberDto.setMempass(memberEntity.getMempass());
-        memberDto.setMemname(memberEntity.getMemname());
-        memberDto.setBirth(memberEntity.getBirth());
-        memberDto.setAddress(memberEntity.getAddress());
-        memberDto.setTel(memberEntity.getTel());
-        memberDto.setEducation(memberEntity.getEducation());
-        memberDto.setPhoto_url(memberEntity.getPhoto_url());
-        return memberDto;
-    }
-
-    public static MemberDto getMemInfo(MemberEntity memberEntity){
-        MemberDto memberDto = new MemberDto();
-        memberDto.setNum(memberEntity.getNum());
         memberDto.setMememail(memberEntity.getMememail());
         memberDto.setMemname(memberEntity.getMemname());
         memberDto.setBirth(memberEntity.getBirth());

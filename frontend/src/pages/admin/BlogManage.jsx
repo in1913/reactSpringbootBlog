@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { RiUserFill } from 'react-icons/ri';
+import {TbPhotoFilled} from 'react-icons/tb';
 import axios from 'axios';
 import Tag from '../../components/admin/Tag';
 const MyInput   = styled.input`
@@ -52,6 +53,32 @@ const OriginCat = styled.div`
     }
 `
 const BlogManage = () => {
+    // 비동기로 값보내기
+    const [blog_name, setBlog_name] = useState('');
+    const [blog_owner_name, setBlog_owner_name] = useState('');
+    const [photo_url, setPhoto_url] = useState('');
+
+    const handleIsNotModiBlog = async () => {
+        setIsModi(false);
+
+        const response = await axios.post('/api/blogupdate', {
+            num : 1,
+            blog_name : blog_name,
+            blog_owner_name : blog_owner_name,
+            photo_url : photo_url,
+            classification : tags.join(',')
+        })
+
+        if(response.data === ""){
+
+            console.log("실패");
+        }else{
+            setBlog_name(response.data[0]["blog_name"]);
+            setBlog_owner_name(response.data[0]["blog_owner_name"]);
+            setPhoto_url(response.data[0]["photo_url"]);
+
+        }
+    }
      // 태그 만들기
     const [text, setText] = useState("");
     const [tags, setTags] = useState([]);
@@ -64,7 +91,6 @@ const BlogManage = () => {
             setText("");
         
     }
-    const [blog_manage, setBlog_manage] = useState([{}]);
 
     useEffect(() => {
         const blogManageData = async () => {
@@ -72,7 +98,9 @@ const BlogManage = () => {
             if(response.data === ""){
 
             }else{
-                setBlog_manage(response.data);
+                setBlog_name(response.data[0]["blog_name"]);
+                setBlog_owner_name(response.data[0]["blog_owner_name"]);
+                setPhoto_url(response.data[0]["photo_url"]);
                 const categoryList = response.data[0]["classification"] && response.data[0]["classification"].split(",");
                 setTags(categoryList || []);
             }
@@ -108,38 +136,10 @@ const BlogManage = () => {
         if(response !== null){
             const data = await response.json();
             setPhoto_url(data.url);
-            document.getElementById("blogimgbox").innerHTML = `<img src=${data.url} alt="me" style="max-width: 400px; max-height: 400px; object-fit: cover;" id="uploadblogimg"/>`
         }else{
             console.error('이미지 업로드 실패');
         }
     }
-
-    // 비동기로 값보내기
-    const [blog_name, setBlog_name] = useState('');
-    const [blog_owner_name, setBlog_owner_name] = useState('');
-    const [photo_url, setPhoto_url] = useState('');
-
-    const handleIsNotModiBlog = async () => {
-        setIsModi(false);
-
-        const response = await axios.post('/api/blogupdate', {
-            num : blog_manage[0]["num"],
-            blog_name : blog_name,
-            blog_owner_name : blog_owner_name,
-            photo_url : photo_url,
-            classification : tags.join(',')
-        })
-
-        if(response.data === ""){
-            
-            console.log("실패");
-        }else{
-            
-            // window.location.reload();
-        }
-    }
-
-
     return (
         <Container>
             <h1>
@@ -152,10 +152,10 @@ const BlogManage = () => {
                     <MyImgBox>
                         <MyImgBox id='blogimgbox'>
                         {
-                            blog_manage[0]["photo_url"] === undefined || blog_manage[0]["photo_url"] === null ? 
-                            (<RiUserFill size={400} style={{background: "#ccc", marginTop: "45px"}}/>)
+                            photo_url === "" ?
+                            (<TbPhotoFilled size={200} style={{background: "#ccc", marginTop: "0px"}}/>)
                             :
-                            (<MyImg src={blog_manage[0]["photo_url"]} alt="me"/>)
+                            (<MyImg src={photo_url} alt="me"/>)
                         }
                         </MyImgBox>
                         <input type="file" style={{display : "none"}} id='blogphoto-upload' accept='image/*' onChange={handleImageBlogUpload}/>
@@ -175,9 +175,9 @@ const BlogManage = () => {
                         <h4>블로그 이름</h4>
                         {
                             isModi ?
-                            (<MyInput type="text" onChange={(e) => setBlog_name(e.target.value)} spellCheck="false" defaultValue={blog_manage[0]["blog_name"]} placeholder='블로그 이름'/>)
+                            (<MyInput type="text" onChange={(e) => setBlog_name(e.target.value)} spellCheck="false" defaultValue={blog_name} placeholder='블로그 이름'/>)
                             :
-                            (<Content>{blog_manage[0]["blog_name"]}</Content>)
+                            (<Content>{blog_name}</Content>)
                         }
                         
                     </div>
@@ -185,9 +185,9 @@ const BlogManage = () => {
                         <h4>블로그 소유자 이름</h4>
                         {
                             isModi ? 
-                            (<MyInput type="text" onChange={(e) => setBlog_owner_name(e.target.value)} spellCheck="false" defaultValue={blog_manage[0]["blog_owner_name"]} placeholder='블로그 소유자 이름'/>)
+                            (<MyInput type="text" onChange={(e) => setBlog_owner_name(e.target.value)} spellCheck="false" defaultValue={blog_owner_name} placeholder='블로그 소유자 이름'/>)
                             :
-                            (<Content>{blog_manage[0]["blog_owner_name"]}</Content>)
+                            (<Content>{blog_owner_name}</Content>)
                         }
                         
                     </div>

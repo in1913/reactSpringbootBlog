@@ -85,6 +85,8 @@ const Tag = styled.span`
 `
 const BlogsContent = ({num, classification, title, content, createdTime, mememail, hits, updatedTime, tags}) => {
 
+
+
     // 이미지 소스만 받아오기
     const imgStr = (str) => {
         const regex = /src="(.*?)"/g;
@@ -112,13 +114,21 @@ const BlogsContent = ({num, classification, title, content, createdTime, mememai
         }
     }
 
-    
+
     const tagList = tags.split(',');
-    
+
     let result = [];
-    for(let a in tagList){
-        result.push(<Link to={`/blog/${classification}/${tagList[a].replace(/\s/g, "%20")}`} key={a}><Tag key={a} className='me-2 mb-1 rounded px-2 p-1'># {tagList[a]}</Tag></Link>)
+
+    if(tags !== ""){
+        for(let a in tagList) {
+            result.push(<Link to={`/blog/${classification}/${tagList[a].replace(/\s/g, "%20")}`} key={a}><Tag key={a} className='me-2 mb-1 rounded px-2 p-1'>#{tagList[a]}</Tag></Link>)
+        }
     }
+
+
+
+
+
     return (
         <Box className='blog-content-hover'>
             <Link to={`/blog/${num}`}>

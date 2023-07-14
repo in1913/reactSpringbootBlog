@@ -19,8 +19,6 @@ const MyInput = styled.input`
 const Comment = ({num}) => {
     // 댓글 정보 GET
     const [commentCnt, setCommentCnt] = useState(0);
-    const [nicknames, setNicknames] = useState([]);
-    const [contents, setContents] = useState([]);
     const [comments, setComments] = useState([{}]);
 
 
@@ -31,14 +29,6 @@ const Comment = ({num}) => {
             console.log(response.data);
             setCommentCnt(response.data.length);
             setComments(response.data);
-            const nicknameList = [];
-            const contentList = [];
-            for(let i in response.data){
-                nicknameList.push(response.data[i]["nickname"]);
-                contentList.push(response.data[i]["content"]);
-                setNicknames(nicknameList);
-                setContents(contentList);
-            }
         }
         commentData();
 
@@ -63,7 +53,12 @@ const Comment = ({num}) => {
         if(response.data === ""){
 
         }else{
-            console.log(response.data);
+            setNickname("");
+            setPassword("");
+            setCommentemail("");
+            setContent("");
+            setComments(response.data);
+            setCommentCnt(response.data.length);
         }
     };
 
@@ -77,23 +72,23 @@ const Comment = ({num}) => {
                     />
                 ))
             }
-            <Col xs={12}>       
+            <Col xs={12}>
                 <Row>
                     <Col lg={6} md={6} sm={12} className="mb-3">
                         <div className='mb-1 text-secondary'>닉네임</div>
-                        <MyInput className='rounded border p-2' type='text' placeholder='닉네임' onChange={(e) => setNickname(e.target.value)}/>
+                        <MyInput className='rounded border p-2' type='text' placeholder='닉네임' onChange={(e) => setNickname(e.target.value)} value={nickname}/>
                     </Col>
                     <Col lg={6} md={6} sm={12} className="mb-3">
                         <div className='mb-1 text-secondary'>비밀번호</div>
-                        <MyInput className='rounded border p-2' type='password' placeholder='비밀번호' onChange={(e) => setPassword(e.target.value)}/>
+                        <MyInput className='rounded border p-2' type='password' placeholder='비밀번호' onChange={(e) => setPassword(e.target.value)} value={password}/>
                     </Col>
                     <Col xs={12} className="mb-3">
                         <div className='mb-1 text-secondary'>이메일</div>
-                        <MyInput className='rounded border p-2' type='email' placeholder='이메일' onChange={(e) => setCommentemail(e.target.value)}/>
+                        <MyInput className='rounded border p-2' type='email' placeholder='이메일' onChange={(e) => setCommentemail(e.target.value)} value={commentemail}/>
                     </Col>
 
                 </Row>
-                <Textarea className='border rounded w-100 p-2'  placeholder='댓글을 작성해주세요.' onChange={(e) => setContent(e.target.value)}/>
+                <Textarea className='border rounded w-100 p-2'  placeholder='댓글을 작성해주세요.' onChange={(e) => setContent(e.target.value)} value={content}/>
                 <div className='text-end my-3'>
                     <Button onClick={handlePostComment} className='bg-info border-0'>댓글 작성</Button>
                 </div>

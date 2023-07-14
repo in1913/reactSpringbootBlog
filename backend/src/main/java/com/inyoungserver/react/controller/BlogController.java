@@ -25,8 +25,8 @@ public class BlogController {
     @PostMapping("/api/write")
     public ResponseEntity <String> write(@RequestBody BlogDto blogDto, HttpSession session){
         String mememail = (String) session.getAttribute("mememail");
-        System.out.println("MEMEMAIL" + mememail);
-        blogService.save(blogDto, mememail);
+        blogDto.setMememail(mememail);
+        blogService.save(blogDto);
         return ResponseEntity.ok().body("Success");
     }
 
@@ -37,8 +37,8 @@ public class BlogController {
     }
 
     @GetMapping("/api/blog/{num}")
-    public ResponseEntity <List <BlogDto>> getBlogWithMember(@PathVariable("num") int num){
-        List <BlogDto> blogDtoList = blogService.getBlogWithMember(num);
-        return ResponseEntity.ok().body(blogDtoList);
+    public ResponseEntity <List <Object>> getBlogWithMember(@PathVariable("num") int num){
+        List <Object> dtoList = blogService.getBlogWithMember(num);
+        return ResponseEntity.ok().body(dtoList);
     }
 }

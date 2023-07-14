@@ -46,8 +46,8 @@ const Category = styled.p`
 `
 const Home = () => {
     // 블로그 데이터 가져오기
-    const [blog, setBlog] = useState([{}]);
-
+    const [photo_url, setPhoto_url] = useState("");
+    const [blog_owner_name, setBlog_owner_name] = useState("");
     const [categoryList, setCategoryList] = useState([]);
 
     useEffect(() => {
@@ -55,7 +55,8 @@ const Home = () => {
             const response = await axios.get('/api/blogmanage');
             if(response.data === ""){
             }else{
-                setBlog(response.data);
+                setPhoto_url(response.data[0]["photo_url"]);
+                setBlog_owner_name(response.data[0]["blog_owner_name"]);
                 const classification = response.data[0]["classification"] && response.data[0]["classification"].split(",");
                 setCategoryList(classification || []);
             }
@@ -67,14 +68,20 @@ const Home = () => {
             <Container style={{paddingTop: "120px"}}>
                 <MyImgBox>
                     {
-                        blog[0]["photo_url"] === undefined || blog[0]["photo_url"] === null ?
+                        photo_url === "" ?
                         (<RiUserFill size={400} style={{background: "#ccc", marginTop: "45px"}}/>) 
                         :
-                        (<MyImg src={blog[0]["photo_url"]} alt="me"/>)
+                        (<MyImg src={photo_url} alt="me"/>)
                     }
                 </MyImgBox>
                 <Title className='mt-3'>
-                    {blog[0]["blog_owner_name"]}
+                    {
+                        blog_owner_name === "" ?
+                            (<>블로그 소유자 이름을 입력해주세요 .</>)
+                            :
+                            (<>{blog_owner_name}</>)
+                    }
+
                 </Title>
                 <SubTitle className='mt-3'>
                     Welcome to my Blog!
