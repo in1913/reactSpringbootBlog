@@ -14,7 +14,7 @@ function App() {
         <Route index element={<Main/>} />
         <Route path="blog" element={<Blog/>} />
         <Route path="blog/login" element={<Login/>} />
-        <Route path="blog/admin" element={<Admin/>} />
+        <Route path="/admin" element={<Admin/>} />
         <Route path="blog/write" element={<Write/>} />
         <Route path="blog/:num" element={<BlogsDetail/>}/>
         <Route path="blog/:category/:tag" element={<TagSearch/>}/>

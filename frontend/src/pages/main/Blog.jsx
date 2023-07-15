@@ -47,9 +47,9 @@ const Blog = () => {
             <Row className='mt-5'>
                 {
                     blogList.slice(0, 6).map((list) => (
-                    <Col lg={4} md={6} sm={12} className='mb-4' key={list.num}>
+                    <Col lg={4} md={6} sm={12} className='mb-4' key={list.blog_num}>
                         <BlogsContent
-                        num={list.num}
+                        num={list.blog_num}
                         classification={list.classification}
                         title={list.title}
                         content={list.content}

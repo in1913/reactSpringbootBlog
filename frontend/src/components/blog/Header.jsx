@@ -97,11 +97,11 @@ const Header = () => {
                                     isToggle ? 
                                     (<ToggleBox className="d-flex flex-column pe-3 pb-2">
                                     <Link
-                                        to="admin"
+                                        to="/admin"
                                         className='px-3 p-1 mt-2 rounded-pill text-decoration-none header-hover'
                                         style={{fontWeight: "600"}}
                                     >
-                                        MyPage
+                                        Admin
                                     </Link>
                                     <MyLink 
                                         href="#"

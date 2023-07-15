@@ -24,15 +24,15 @@ const Header = ({setIsLogin}) => {
         <Navbar expand="lg" className='mb-3' fixed='top' style={{background: "rgba(245,245,245, .5)", backdropFilter: "blur(12px)"}}>
             <Container>
             <Navbar.Brand style={{fontWeight: "900", fontStyle: "italic"}}>
-                <Link to="/blog" style={{textDecoration: "none", color: "#000"}}>Inyoung's Blog</Link>
+                <Link to="/" style={{textDecoration: "none", color: "#000"}}>Inyoung</Link>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls='basice-navbar-nav'/>
             <Navbar.Collapse id='basic-navbar-nav'>
                 <Nav className='ms-auto'>
-                    <Link to="/"
-                        className="my-2 active rounded-pill px-3 me-3 p-1 text-decoration-none header-hover" 
-                        style={{fontWeight:" 600"}}
-                        >Home</Link>
+                    <Link to="/blog"
+                        className="my-2 active rounded-pill px-3 me-3 p-1 text-decoration-none header-hover"
+                          style={{fontWeight: "900", fontStyle: "italic"}}
+                        >Inyoung's blog</Link>
                     <MyLink 
                         href="#"
                         onClick={handleLogout}

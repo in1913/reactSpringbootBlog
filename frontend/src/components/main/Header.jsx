@@ -17,15 +17,15 @@ const Header = () => {
                         style={{fontWeight:" 600", marginRight: "20px", transition: "all 0.3s"}}
                     >Home</Nav.Link>
                     <Nav.Link 
-                        href='#blog' 
-                        className="active rounded-pill px-3 header-hover"
-                        style={{fontWeight:" 600", marginRight: "20px", transition: "all 0.3s"}}
-                    >Blog</Nav.Link>
-                    <Nav.Link 
                         href='#portfolio' 
                         className="active rounded-pill px-3 header-hover"
                         style={{fontWeight:" 600", marginRight: "20px", transition: "all 0.3s"}}
                     >Portfolio</Nav.Link>
+                    <Nav.Link
+                        href='#blog'
+                        className="active rounded-pill px-3 header-hover"
+                        style={{fontWeight:" 600", marginRight: "20px", transition: "all 0.3s"}}
+                    >Blog</Nav.Link>
                     <Nav.Link 
                         href='#contact' 
                         className="active rounded-pill px-3 header-hover"

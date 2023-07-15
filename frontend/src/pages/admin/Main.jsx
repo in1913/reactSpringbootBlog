@@ -4,6 +4,8 @@ import Footer from '../../components/main/Footer';
 import axios from 'axios';
 import Header from '../../components/admin/Header';
 import BlogManage from './BlogManage';
+import Portfolio from "../main/Portfolio";
+import PortfolioManage from "./PortfolioManage";
 
 const Main = () => {
 
@@ -32,6 +34,7 @@ const Main = () => {
             <Header isLogin={isLogin} setIsLogin={setIsLogin}/>
             <Home session={session}/>
             <BlogManage/>
+            <PortfolioManage/>
             <Footer/>
         </div>
     );

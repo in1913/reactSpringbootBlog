@@ -8,8 +8,8 @@ function App() {
   return (
     <>
     <Home/>
-    <Blog/>
     <Portfolio/>
+    <Blog/>
     <Contact/>
     <Footer/>
     </>

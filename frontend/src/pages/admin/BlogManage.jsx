@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import { RiUserFill } from 'react-icons/ri';
 import {TbPhotoFilled} from 'react-icons/tb';
 import axios from 'axios';
 import Tag from '../../components/admin/Tag';
@@ -141,10 +140,11 @@ const BlogManage = () => {
         }
     }
     return (
-        <Container>
-            <h1>
+        <Container className="pb-5">
+            <h1 className="pb-5">
                 설정
             </h1>
+            <h2 className="pb-3">블로그</h2>
             <Row className='mt-3 mb-5'>
                 {/* 사진 주소 */}
                 <Col lg={4}>
