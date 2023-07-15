@@ -5,7 +5,7 @@
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-/backend/src/main/java/com/inyoungserver/react/security/SftpConfig.java
+/backend/src/main/java/com/inyoungserver/react/security
 
 ### STS ###
 /backend/.apt_generated
