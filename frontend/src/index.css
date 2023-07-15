@@ -72,3 +72,11 @@ input.write-title::placeholder{
         width: 90%;
     }
 }
+.react-datepicker-wrapper{
+    width: calc(100% - 60px);
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
