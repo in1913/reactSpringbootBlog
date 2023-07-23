@@ -1,19 +1,15 @@
 package com.inyoungserver.react.repository;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
 
-import jakarta.persistence.EntityManager;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.inyoungserver.react.entity.BlogEntity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.inyoungserver.react.entity.BlogEntity;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.swing.text.html.parser.Entity;
-
 public interface BlogRepository extends JpaRepository <BlogEntity, Integer>{
-
+    @Modifying
+    @Query(value="UPDATE BlogEntity b SET b.hits = b.hits + 1 WHERE b.blog_num = :blog_num")
+    void updateHits(@Param("blog_num") int blog_num);
 }

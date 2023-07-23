@@ -15,12 +15,14 @@ const Main = () => {
     // 로그인 세션 받아오기
     const [session, setSession] = useState(null);
 
+
     useEffect(() => {
         const sessionData = async () => {
             const response = await axios.get('/api/session');
             if(response.data === ""){
                 setIsLogin(false);
                 setSession(null);
+                window.location.href= "/";
             }else{
                 setIsLogin(true);
                 setSession(response.data);

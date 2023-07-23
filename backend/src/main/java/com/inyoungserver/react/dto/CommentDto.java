@@ -13,9 +13,8 @@ import java.time.LocalDateTime;
 @ToString
 public class CommentDto {
     private int cmt_num;
+    private String mememail;
     private String nickname;
-    private String password;
-    private String commentemail;
     private String content;
     private BlogDto blogDto;
     private LocalDateTime createdTime;
@@ -28,10 +27,10 @@ public class CommentDto {
         commentDto.setCmt_num(commentDto.getCmt_num());
         blogDto.setBlog_num(blogEntity.getBlog_num());
         commentDto.setCmt_num(commentEntity.getCmt_num());
-        commentDto.setNickname(commentEntity.getNickname());
         commentDto.setCreatedTime(commentEntity.getCreatedTime());
         commentDto.setUpdatedTime(commentEntity.getUpdatedTime());
-        commentDto.setCommentemail(commentEntity.getCommentemail());
+        commentDto.setMememail(commentEntity.getMememail());
+        commentDto.setNickname(commentEntity.getNickname());
         commentDto.setContent(commentEntity.getContent());
 
         commentDto.setBlogDto(blogDto);

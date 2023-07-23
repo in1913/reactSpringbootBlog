@@ -22,6 +22,9 @@ public class MemberEntity {
     private String mememail;
 
     @Column
+    private String nickname;
+
+    @Column
     private String mempass;
 
     @Column
@@ -46,6 +49,7 @@ public class MemberEntity {
     public static MemberEntity toEntity(MemberDto memberDto){
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setMememail(memberDto.getMememail());
+        memberEntity.setNickname(memberDto.getNickname());
         memberEntity.setMempass(memberDto.getMempass());
         memberEntity.setMemname(memberDto.getMemname());
         memberEntity.setBirth(memberDto.getBirth());
@@ -59,6 +63,9 @@ public class MemberEntity {
     public static MemberEntity toUpdateEntity(MemberEntity memberEntity, MemberDto memberDto){
         if(!memberDto.getMememail().isEmpty()){
             memberEntity.setMememail(memberDto.getMememail());
+        }
+        if(!memberDto.getNickname().isEmpty()){
+            memberEntity.setNickname(memberDto.getNickname());
         }
         if(!memberDto.getMempass().isEmpty()){
             memberEntity.setMempass(memberDto.getMempass());

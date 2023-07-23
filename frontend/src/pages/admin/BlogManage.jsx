@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {TbPhotoFilled} from 'react-icons/tb';
 import axios from 'axios';
 import Tag from '../../components/admin/Tag';
+
 const MyInput   = styled.input`
     padding: 7px 10px;
     border: 1px solid #ccc;

@@ -46,4 +46,11 @@ public class BlogEntity extends TimeEntity {
         return blogEntity;
     }
 
+    public static BlogEntity toUpdateEntity(BlogEntity blogEntity, BlogDto blogDto){
+        blogEntity.setClassification(blogDto.getClassification());
+        blogEntity.setContent(blogDto.getContent());
+        blogEntity.setTags(blogDto.getTags());
+        blogEntity.setTitle(blogDto.getTitle());
+        return blogEntity;
+    }
 }

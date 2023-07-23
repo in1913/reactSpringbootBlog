@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository <CommentEntity, Integer> {
 
     Optional <List <CommentEntity>> findByBlogEntity(BlogEntity blogEntity);
+
+    void deleteByBlogEntity(BlogEntity blogEntity);
 }

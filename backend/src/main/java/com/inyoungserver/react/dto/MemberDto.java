@@ -16,6 +16,7 @@ import lombok.ToString;
 public class MemberDto {
     private int num;
     private String mememail;
+    private String nickname;
     private String mempass;
     private String memname;
     private String birth;
@@ -28,6 +29,7 @@ public class MemberDto {
     public static MemberDto toDto(MemberEntity memberEntity){
         MemberDto memberDto = new MemberDto();
         memberDto.setMememail(memberEntity.getMememail());
+        memberDto.setNickname(memberEntity.getNickname());
         memberDto.setMemname(memberEntity.getMemname());
         memberDto.setBirth(memberEntity.getBirth());
         memberDto.setAddress(memberEntity.getAddress());

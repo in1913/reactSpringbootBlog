@@ -38,4 +38,24 @@ public class CommentService {
             return null;
         }
     }
+
+    @Transactional
+    public void deleteByBlog_num(BlogEntity blogEntity){
+        commentRepository.deleteByBlogEntity(blogEntity);
+    }
+
+    @Transactional
+    public void delete(int cmt_num){
+        commentRepository.deleteById(cmt_num);
+    }
+
+    @Transactional
+    public void update(CommentDto commentDto){
+        Optional <CommentEntity> optionalCommentEntity = commentRepository.findById(commentDto.getCmt_num());
+        if(optionalCommentEntity.isPresent()){
+            CommentEntity commentEntity = optionalCommentEntity.get();
+            CommentEntity updatedCommentEntity = CommentEntity.toUpdateEntity(commentEntity, commentDto);
+            commentRepository.save(updatedCommentEntity);
+        }
+    }
 }

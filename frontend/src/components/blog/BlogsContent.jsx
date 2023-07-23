@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import {SlEye} from 'react-icons/sl';
+import axios from "axios";
 
 const Box = styled.div`
     display: block;
@@ -125,13 +126,13 @@ const BlogsContent = ({num, classification, title, content, createdTime, mememai
         }
     }
 
-
-
-
+    const handleHitsUpdate = async () => {
+        await axios.get(`/api/blog/hits/${num}`);
+    }
 
     return (
         <Box className='blog-content-hover'>
-            <Link to={`/blog/${num}`}>
+            <Link to={`/blog/${num}`} onClick={handleHitsUpdate}>
                 <BlogImgBox>
                     <BlogImg src={imgStr(content)[0]} alt="blog_photo"/>
                 </BlogImgBox>
@@ -148,7 +149,7 @@ const BlogsContent = ({num, classification, title, content, createdTime, mememai
                     </span>
                 </div>
                 
-                <Link to={`/blog/${num}`} className='text-decoration-none'>
+                <Link to={`/blog/${num}`} className='text-decoration-none' onClick={handleHitsUpdate}>
                     <Title>{title}</Title>
                     <Contents>{content.replace(/(<([^>]+)>)/gi, "").substring(0, 50)}</Contents>
                 </Link>

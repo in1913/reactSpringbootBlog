@@ -3,7 +3,8 @@ import {Container, Nav, Navbar} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
-import {RiArrowDropDownLine, RiArrowDropUpLine} from 'react-icons/ri'
+import {RiArrowDropDownLine, RiArrowDropUpLine} from 'react-icons/ri';
+import Popup from "../../pages/admin/Popup";
 
 const UserBox = styled.div`
     transition: all 0.3s;
@@ -62,8 +63,12 @@ const Header = () => {
         e.preventDefault();
         setIstoggle(!isToggle);
     }
-    
+
+    const [isLoginPopup, setIsLoginPopup] = useState(false);
+    const [isSignupPopup, setIsSignupPopup] = useState(false);
+
     return (
+        <>
         <Navbar expand="lg" className='mb-3' fixed='top' style={{background: "rgba(245,245,245, .5)", backdropFilter: "blur(12px)"}}>
             <Container>
             <Navbar.Brand style={{fontWeight: "900", fontStyle: "italic"}}>
@@ -120,11 +125,18 @@ const Header = () => {
 
                         // 로그인 안했을때
                         (
-                            <Link 
-                                to="/blog/login" 
-                                className="active rounded-pill px-3 me-3 pb-1  pt-1 text-decoration-none my-2 header-hover"
+                            <>
+                            <button
+                                onClick={() => setIsLoginPopup(true)}
+                                className=" border-0 active bg-transparent rounded-pill px-3 me-3 pb-1  pt-1 text-decoration-none my-2 header-hover"
                                 style={{fontWeight:" 600", transition: "all 0.3s"}}
-                                >LogIn</Link>
+                                >LogIn</button>
+                            <button
+                                onClick={() => setIsSignupPopup(true)}
+                                className=" border-0 active bg-transparent rounded-pill px-3 me-3 pb-1  pt-1 text-decoration-none my-2 header-hover"
+                                style={{fontWeight:" 600", transition: "all 0.3s"}}
+                                >SignUp</button>
+                            </>
                         )
                     }
                     
@@ -132,6 +144,16 @@ const Header = () => {
             </Navbar.Collapse> 
             </Container>
         </Navbar>
+            {
+                isLoginPopup ?
+                    (<Popup isLoginPopup={isLoginPopup} setIsLoginPopup={setIsLoginPopup}
+                            isSignupPopup={isSignupPopup} setSignupPopup={setIsSignupPopup}
+                    />)
+                    :
+                    (<></>)
+            }
+
+        </>
         
     );
 };

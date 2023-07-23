@@ -60,4 +60,24 @@ public class BlogService {
         }
     }
 
+    @Transactional
+    public void delete(int num){
+        blogRepository.deleteById(num);
+    }
+
+    @Transactional
+    public void update(BlogDto blogDto){
+        Optional <BlogEntity> optionalBlogEntity = blogRepository.findById(blogDto.getBlog_num());
+        if(optionalBlogEntity.isPresent()){
+            BlogEntity blogEntity = optionalBlogEntity.get();
+            BlogEntity updatedBlogEntity = BlogEntity.toUpdateEntity(blogEntity, blogDto);
+            blogRepository.save(updatedBlogEntity);
+        }
+    }
+
+    @Transactional
+    public void updateHits(int blog_num){
+        blogRepository.updateHits(blog_num);
+    }
+
 }

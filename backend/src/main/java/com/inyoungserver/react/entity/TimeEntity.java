@@ -18,6 +18,6 @@ public class TimeEntity {
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdTime;
-    @Column(updatable = false)
+    @Column(insertable = false)
     private LocalDateTime updatedTime;
 }

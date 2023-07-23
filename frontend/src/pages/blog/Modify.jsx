@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import Tag from '../../components/blog/Tag';
 import axios from 'axios';
 import Footer from '../../components/main/Footer';
+import {useParams} from "react-router-dom";
+import blog from "../main/Blog";
 
 const MyInput = styled.input`
     background: transparent;
@@ -40,7 +42,8 @@ const MyTagInput = styled.input`
     }
 `
 
-const Write = () => {
+const Modify = () => {
+    const {num} = useParams();
     document.body.style = 'background: #f5f7fb;';
 
     // 로그인 확인
@@ -54,26 +57,28 @@ const Write = () => {
             if(response.data === ""){
                 setIsLogin(false);
                 setSession(null);
+                window.location.href = "/blog";
             }else{
                 setIsLogin(true);
                 setSession(response.data);
             }
         };
         sessionData();
-    }, []);
 
-    useEffect(() => {
-        const sessionData = async () => {
-            const response = await axios.get('/api/session');
-            if(response.data !== 0){
-                setSession(response.data);
-            }else{
-                setSession(null);
+
+        const blogData = async () => {
+            const response2 = await axios.get(`/api/blog/${num}`);
+            if(response2.data !== ""){
+                setTitle(response2.data[1].title);
+                setContent(response2.data[1].content);
+                setTags(response2.data[1].tags.split(","));
+                setClassification(response2.data[1].classification);
             }
         };
-        sessionData();
+        blogData();
+
     }, []);
-    
+
 
     // 태그 만들기
     const [text, setText] = useState("");
@@ -121,12 +126,13 @@ const Write = () => {
     const [classification, setClassification] = useState("");
 
     const handleSubmit = async () => {
-        await axios.post('/api/write',{
+        await axios.post(`/api/modify`,{
+            blog_num : num,
             classification: classification, 
             title: title, 
             content: content, 
             tags: tags.join(',')})
-        window.location.href = "/blog";
+        window.location.href = `/blog/${num}`;
     }
 
     
@@ -147,7 +153,7 @@ const Write = () => {
                                     <Row>
                                         <Col lg={12} md={12} className='mb-3'>
                                             <ClassTitle>분류</ClassTitle>
-                                            <Form.Select defaultValue="server" onChange={(e) => {setClassification(e.target.value)}}>
+                                            <Form.Select defaultValue={classification} onChange={(e) => {setClassification(e.target.value)}}>
                                                 <option value="server">Server</option>
                                                 <option value="frontend">FrontEnd</option>
                                                 <option value="backend">BackEnd</option>
@@ -197,7 +203,8 @@ const Write = () => {
                             <MyInput className='w-50 text-center write-title' type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}/>
                         </Col>
                         <Col xs={12} style={{height: "750px"}}>
-                            <TextEditor value={content} onChange={(value) => setContent(value)}/>
+                            <TextEditor
+                                value={content} onChange={(value) => setContent(value)}/>
                         </Col>
                     </Row>
                 
@@ -207,4 +214,4 @@ const Write = () => {
     );
 };
 
-export default Write;
+export default Modify;

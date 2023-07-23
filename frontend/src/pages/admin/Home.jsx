@@ -93,6 +93,7 @@ const Home = ({session}) => {
     }
     // 비동기로 값보내기
     const [memname, setMemname] = useState('');
+    const [nickname, setNickname] = useState('');
     const [birth, setBirth] = useState('');
     const [address, setAddress] = useState('');
     const [tel, setTel] = useState('');
@@ -107,6 +108,7 @@ const Home = ({session}) => {
         const response = await axios.post('/api/update', {
             num : session[0]["num"],
             mememail : session[0]["mememail"],
+            nickname : nickname,
             memname : memname,
             birth : birth,
             address : address,
@@ -172,6 +174,22 @@ const Home = ({session}) => {
                                     )}
                                 </Col>
                                 
+                            </Row>
+                            {/* 닉네임 */}
+                            <Row style={{height: "45px"}}>
+                                <Col xs={4}>
+                                    <Title>닉네임</Title>
+                                </Col>
+                                <Col xs={8}>
+                                    {isModi ?
+                                        (
+                                            <MyInput defaultValue={session[0]["nickname"] === null ? "" : session[0]["nickname"]} type='text' onChange={(e) => setNickname(e.target.value)}  placeholder='닉네임' spellCheck="false"/>
+                                        ):
+                                        (
+                                            <Content>{session[0]["nickname"]}</Content>
+                                        )}
+                                </Col>
+
                             </Row>
                             {/* 생년월일 */}
                             <Row style={{height: "45px"}}>

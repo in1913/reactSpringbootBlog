@@ -1,6 +1,5 @@
 package com.inyoungserver.react.entity;
 
-import com.inyoungserver.react.dto.BlogDto;
 import com.inyoungserver.react.dto.CommentDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,13 +20,10 @@ public class CommentEntity extends TimeEntity{
     private BlogEntity blogEntity;
 
     @Column
+    private String mememail;
+
+    @Column
     private String nickname;
-
-    @Column
-    private String password;
-
-    @Column
-    private String commentemail;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -36,10 +32,14 @@ public class CommentEntity extends TimeEntity{
         CommentEntity commentEntity = new CommentEntity();
         BlogEntity blogEntity = new BlogEntity();
         blogEntity.setBlog_num(blog_num);
-        commentEntity.setBlogEntity(blogEntity);
         commentEntity.setNickname(commentDto.getNickname());
-        commentEntity.setPassword(commentDto.getPassword());
-        commentEntity.setCommentemail(commentDto.getCommentemail());
+        commentEntity.setBlogEntity(blogEntity);
+        commentEntity.setMememail(commentDto.getMememail());
+        commentEntity.setContent(commentDto.getContent());
+        return commentEntity;
+    }
+
+    public static CommentEntity toUpdateEntity(CommentEntity commentEntity, CommentDto commentDto){
         commentEntity.setContent(commentDto.getContent());
         return commentEntity;
     }

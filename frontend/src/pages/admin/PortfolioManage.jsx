@@ -4,20 +4,61 @@ import DatePicker from 'react-datepicker';
 import {ko} from 'date-fns/esm/locale';
 import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
+import {BsDot} from 'react-icons/bs';
+import axios from "axios";
 
-const MyDatePicker = styled(DatePicker)`
+const MyDatePicker1 = styled(DatePicker)`
   width: 100%;
   border-top-right-radius: 0.375rem;
   border-bottom-right-radius: 0.375rem;
 `
+
+const MyDatePicker2 = styled(DatePicker)`
+  width: 100%;
+`
 const PortfolioManage = () => {
-    // 이미지 리스트 useState
+    // POST
     const [updateImgList, setUpdateImgList] = useState([]);
+    const [title, setTitle] = useState("");
+    const [start_date, setStart_date] = useState("");
+    const [end_date, setEnd_date] = useState("");
+    const [people, setPeople] = useState(0);
+    const [summary, setSummary] = useState("");
+    const [git_site, setGit_site] = useState("");
+    const [web_site, setWeb_site] = useState("");
+    const [descriptionList, setDescriptionList] = useState([]);
+    const [frontend, setFrontend] = useState("");
+    const [backend, setBackend] = useState("");
+    const [database, setDatabase] = useState("");
+    const [deployment, setDeployment] = useState("");
+    const [processing_end_date, setProcessing_end_date] = useState("");
 
-    // 프로젝트 날짜 useState
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    // 포트폴리오 업로드
+    const handlePortfolioPost = async () => {
+        const response = await axios.post('/api/portfolio/write', {
+            photos : updateImgList.join(","),
+            title : title,
+            start_date : start_date,
+            end_date : end_date,
+            people : people,
+            summary : summary,
+            git_site : "https://" + git_site,
+            web_site : "https://" + web_site,
+            front_content : frontend,
+            back_content : backend,
+            db_content : database,
+            deployment : deployment,
+            main_description : descriptionList.join("?")
+        })
 
+        if(response.data !== null){
+            console.log("success");
+            window.location.href = "";
+        }else{
+            console.log("fail");
+        }
+
+    }
 
     // 사진 편집 드래그 하면 사진 업로드
     const handleDragPhoto = async (e) => {
@@ -124,6 +165,26 @@ const PortfolioManage = () => {
         const updateDelImgList = updateImgList.filter((x) => x !== url);
         setUpdateImgList(updateDelImgList);
     }
+
+    // 주요기능 입력
+    const [description, setDescription] = useState("");
+
+    const handleDescriptionPlus = () => {
+        setDescriptionList([...descriptionList, description]);
+        setDescription("");
+    }
+
+    const handleChooseEndDate = (e) => {
+        setProcessing_end_date(e.target.value);
+
+    }
+    // 주요기능 삭제
+    const handleRemoveDescription = (e, content) => {
+        e.preventDefault();
+        const updateDescriptionList = descriptionList.filter((x) => x !== content);
+        setDescriptionList(updateDescriptionList);
+    }
+
     return (
         <Container className="pb-5">
             <h2 className="pb-3">포트폴리오</h2>
@@ -175,141 +236,188 @@ const PortfolioManage = () => {
                 <Col xs={12}>
                     {/* 프로젝트명 */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>프로젝트명</h4>
                         </Col>
-                        <Col lg={8} md={12}>
-                            <input type="text" className="border rounded w-100 px-2 py-1" placeholder="프로젝트명"/>
+                        <Col lg={9} md={12}>
+                            <input type="text" className="border rounded w-100 px-2 py-1" placeholder="프로젝트명" onChange={(e) => setTitle(e.target.value)}/>
                         </Col>
                     </Row>
                     {/* 프로젝트 기간 */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>프로젝트 기간</h4>
                         </Col>
-                        <Col lg={8} md={12}>
+                        <Col lg={9} md={12}>
                             <Row>
                                 <Col lg={6} className="d-flex pb-2">
 
                                     <div className="border h-100 px-2 pt-2 text-secondary" style={{borderRadius : "0.375rem", borderTopRightRadius: "0", borderBottomRightRadius : "0"}}>시작일</div>
-                                    <MyDatePicker
-                                        isClearable
-                                        selected={startDate}
-                                        onChange={(date) => setStartDate(date)}
-                                        endDate={endDate}
+                                    <MyDatePicker1
+                                        selected={start_date}
+                                        onChange={(date) => setStart_date(date)}
+                                        endDate={end_date}
                                         locale={ko}
                                         dateFormat="yyyy.MM.dd"
                                         type="text"
                                         className="border px-2 py-1"
                                         placeholderText="프로젝트 시작 날짜를 선택해주세요."/>
                                 </Col>
-                                <Col lg={6} className="d-flex pb-2">
-                                    <div className="border h-100 px-2 pt-2 text-secondary" style={{borderRadius : "0.375rem", borderTopRightRadius: "0", borderBottomRightRadius : "0"}}>종료일</div>
-                                    <MyDatePicker
-                                        selected={endDate}
-                                        onChange={(date) => setEndDate(date)}
-                                        selectsEnd
-                                        startDate={startDate}
-                                        minDate={startDate}
-                                        locale={ko}
-                                        dateFormat="yyyy.MM.dd"
-                                        type="text"
-                                        className="border px-2 py-1"
-                                        placeholderText="프로젝트 시작 날짜를 선택해주세요."/>
+                                <Col lg={6} className=" pb-2">
+                                    <Row>
+                                        <Col xs={9} className="d-flex pe-0">
+                                            <div className="border h-100 px-2 pt-2 text-secondary" style={{borderRadius : "0.375rem", borderTopRightRadius: "0", borderBottomRightRadius : "0"}}>종료일</div>
+                                            {
+                                                processing_end_date === "true" ?
+                                                    (<input onChange={(e) => setEnd_date(e.target.value)} className="bg-info-subtle border px-2 py-1" readOnly={true} value="진행중" style={{width: "calc(100% - 60px)"}}/>)
+                                                    :
+                                                    (<MyDatePicker2
+                                                        selected={end_date}
+                                                        onChange={(date) => setEnd_date(date)}
+                                                        selectsEnd
+                                                        startDate={start_date}
+                                                        minDate={start_date}
+                                                        locale={ko}
+                                                        dateFormat="yyyy.MM.dd"
+                                                        type="text"
+                                                        className="border px-2 py-1"
+                                                        placeholderText="프로젝트 시작 날짜를 선택해주세요."/>
+                                                    )
+                                            }
+
+                                        </Col>
+                                        <Col xs={3} className="ps-0">
+                                            <select
+                                                style={{borderTopRightRadius: "0.375rem", borderBottomRightRadius: "0.375rem"}}
+                                                className="h-100 w-100 border-secondary-subtle text-secondary"
+                                                onChange={handleChooseEndDate}
+                                                defaultValue={false}
+                                            >
+                                                <option value={true}>진행중</option>
+                                                <option value={false}>직접입력</option>
+                                            </select>
+                                        </Col>
+                                    </Row>
+
                                 </Col>
                             </Row>
                         </Col>
                     </Row>
                     {/* 프로젝트 참여 인원 */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>프로젝트 참여 인원</h4>
                         </Col>
-                        <Col lg={8} md={12} className="d-flex">
-                            <input type="number" className="border px-2 py-1" placeholder="숫지만 입력해주세요." style={{borderRadius : "0.375rem", borderTopRightRadius: "0", borderBottomRightRadius : "0"}}/>
+                        <Col lg={9} md={12} className="d-flex">
+                            <input onChange={(e) => setPeople(e.target.value)} type="number" className="border px-2 py-1" placeholder="숫지만 입력해주세요." style={{borderRadius : "0.375rem", borderTopRightRadius: "0", borderBottomRightRadius : "0"}}/>
                             <div className="border h-100 px-2 pt-2 text-secondary" style={{borderTopRightRadius: "0.375rem", borderBottomRightRadius : "0.375rem"}}>명</div>
                         </Col>
                     </Row>
                     {/* 요약 */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>요약</h4>
                         </Col>
-                        <Col lg={8} md={12}>
-                            <input type="text" className="border rounded w-100 px-2 py-1" placeholder="최대한 짧게 써주세요."/>
+                        <Col lg={9} md={12}>
+                            <input type="text" className="border rounded w-100 px-2 py-1" placeholder="최대한 짧게 써주세요." onChange={(e) => setSummary(e.target.value)}/>
                         </Col>
                     </Row>
                     {/* GitHub */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>Github 주소</h4>
                         </Col>
-                        <Col lg={8} md={12} className="d-flex">
+                        <Col lg={9} md={12} className="d-flex">
                             <div className="border h-100 px-2 pt-2 text-secondary" style={{borderRadius : "0.375rem", borderTopRightRadius: "0", borderBottomRightRadius : "0"}}>https://</div>
-                            <input type="text" className="border w-100 px-2 py-1"style={{borderRadius : "0.375rem", borderTopLeftRadius: "0", borderBottomLeftRadius : "0"}} placeholder="github.com/yourID/yourRepository"/>
+                            <input onChange={(e) => setGit_site(e.target.value)} type="text" className="border w-100 px-2 py-1"style={{borderRadius : "0.375rem", borderTopLeftRadius: "0", borderBottomLeftRadius : "0"}} placeholder="github.com/yourID/yourRepository"/>
                         </Col>
                     </Row>
                     {/* WebSite */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>WebSite 주소</h4>
                         </Col>
-                        <Col lg={8} md={12} className="d-flex">
+                        <Col lg={9} md={12} className="d-flex">
                             <div className="border h-100 px-2 pt-2 text-secondary" style={{borderRadius : "0.375rem", borderTopRightRadius: "0", borderBottomRightRadius : "0"}}>https://</div>
-                            <input type="text" className="border w-100 px-2 py-1"style={{borderRadius : "0.375rem", borderTopLeftRadius: "0", borderBottomLeftRadius : "0"}} placeholder="yourDomain.com"/>
+                            <input onChange={(e) => setWeb_site(e.target.value)} type="text" className="border w-100 px-2 py-1"style={{borderRadius : "0.375rem", borderTopLeftRadius: "0", borderBottomLeftRadius : "0"}} placeholder="yourDomain.com"/>
                         </Col>
                     </Row>
                     {/* 주요기능 */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>주요기능</h4>
                         </Col>
-                        <Col lg={8} md={12}>
+                        <Col lg={9} md={12}>
                             <Row>
-                                <Col lg={10} className="pb-2">
-                                    <input type="text" className="border rounded w-100 px-2 py-1" placeholder="주요기능을 한줄씩 추가해주세요."/>
+                                {
+                                    descriptionList.map((content, index) => (
+                                        <Col xs={12} key={index} className="pb-2">
+                                            <Row className=" align-items-center px-2 py-1">
+                                                <Col xs={10} style={{fontSize: "20px"}}>
+                                                    <BsDot/> {content}
+                                                </Col>
+                                                <Col xs={2} className="text-end">
+                                                    <Button onClick={(e) => handleRemoveDescription(e, content)} className="rounded-circle px-2 py-1 bg-danger border-0" style={{fontSize : "10px"}}>X</Button>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    ))
+                                }
+                                <Col xs={12} className="pb-2">
+                                    <input
+                                        value={description}
+                                        type="text"
+                                        className="border rounded w-100 px-2 py-1"
+                                        placeholder="주요 기능을 한줄씩 입력해주세요."
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
                                 </Col>
-                                <Col lg={2} className="d-flex justify-content-end pb-2">
-                                    <Button className="me-2 border-0" style={{whiteSpace: "nowrap"}}>추가</Button>
-                                    <Button className="bg-danger border-0" style={{whiteSpace: "nowrap"}}>삭제</Button>
+                                <Col xs={12} className="text-end">
+                                    <Button onClick={handleDescriptionPlus}>추가</Button>
                                 </Col>
+
                             </Row>
                         </Col>
                     </Row>
                     {/* FrontEnd */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>FrontEnd</h4>
                         </Col>
-                        <Col lg={8} md={12}>
-                            <input type="text" className="border rounded w-100 px-2 py-1" placeholder="프론트엔드 스택을 써주세요."/>
+                        <Col lg={9} md={12}>
+                            <input onChange={(e) => setFrontend(e.target.value)} type="text" className="border rounded w-100 px-2 py-1" placeholder="프론트엔드 스택을 써주세요."/>
                         </Col>
                     </Row>
                     {/* BackEnd */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>BackEnd</h4>
                         </Col>
-                        <Col lg={8} md={12}>
-                            <input type="text" className="border rounded w-100 px-2 py-1" placeholder="백엔드 스택을 써주세요."/>
+                        <Col lg={9} md={12}>
+                            <input onChange={(e) => setBackend(e.target.value)} type="text" className="border rounded w-100 px-2 py-1" placeholder="백엔드 스택을 써주세요."/>
                         </Col>
                     </Row>
                     {/* Database */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>Database</h4>
                         </Col>
-                        <Col lg={8} md={12}>
-                            <input type="text" className="border rounded w-100 px-2 py-1" placeholder="데이터베이스 스택을 써주세요."/>
+                        <Col lg={9} md={12}>
+                            <input onChange={(e) => setDatabase(e.target.value)} type="text" className="border rounded w-100 px-2 py-1" placeholder="데이터베이스 스택을 써주세요."/>
                         </Col>
                     </Row>
                     {/* Deployment */}
                     <Row className="pb-3">
-                        <Col lg={4} md={12}>
+                        <Col lg={3} md={12}>
                             <h4>Deployment</h4>
                         </Col>
-                        <Col lg={8} md={12}>
-                            <input type="text" className="border rounded w-100 px-2 py-1" placeholder="배포환경을 써주세요."/>
+                        <Col lg={9} md={12}>
+                            <input onChange={(e) => setDeployment(e.target.value)} type="text" className="border rounded w-100 px-2 py-1" placeholder="배포환경을 써주세요."/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={12}>
+                            <Button onClick={handlePortfolioPost} className=" w-100 bg-info border-0 rounded-pill">저장</Button>
                         </Col>
                     </Row>
                 </Col>

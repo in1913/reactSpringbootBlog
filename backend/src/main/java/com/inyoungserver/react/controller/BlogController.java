@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.inyoungserver.react.dto.CommentDto;
+import com.inyoungserver.react.entity.BlogEntity;
+import com.inyoungserver.react.service.CommentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,13 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "http://localhost:3000")
 public class BlogController {
     private final BlogService blogService;
+    private final CommentService commentService;
+
+    @GetMapping("/api/blog/hits/{blog_num}")
+    public ResponseEntity <String> updateHits(@PathVariable("blog_num") int blog_num){
+        blogService.updateHits(blog_num);
+        return ResponseEntity.ok().body("Success");
+    }
 
     @PostMapping("/api/write")
     public ResponseEntity <String> write(@RequestBody BlogDto blogDto, HttpSession session){
@@ -28,6 +37,21 @@ public class BlogController {
         blogDto.setMememail(mememail);
         blogService.save(blogDto);
         return ResponseEntity.ok().body("Success");
+    }
+
+    @PostMapping("/api/modify")
+    public ResponseEntity <String> update(@RequestBody BlogDto blogDto){
+        blogService.update(blogDto);
+        return ResponseEntity.ok().body("Success");
+    }
+
+    @GetMapping("/api/delete/{num}")
+    public ResponseEntity <String> delete(@PathVariable("num") int num){
+        BlogEntity blogEntity = new BlogEntity();
+        blogEntity.setBlog_num(num);
+        commentService.deleteByBlog_num(blogEntity);
+        blogService.delete(num);
+        return ResponseEntity.ok().body("delete");
     }
 
     @GetMapping("/api/bloglist")

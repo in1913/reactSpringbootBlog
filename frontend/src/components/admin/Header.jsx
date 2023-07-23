@@ -16,6 +16,7 @@ const Header = ({setIsLogin}) => {
         const response = await axios.get('/api/logout');
         if(response.data === "Success"){
             setIsLogin(false);
+            window.location.href = "/blog";
         }
     };
 

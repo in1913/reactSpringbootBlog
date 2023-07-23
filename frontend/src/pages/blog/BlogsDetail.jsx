@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {Container, Row, Col} from 'react-bootstrap';
 import styled from 'styled-components';
 import Header from '../../components/blog/Header';
@@ -82,6 +82,28 @@ const UtilButton = styled.button`
     padding: 10px;
 `
 const BlogsDetail = () => {
+
+    // 로그인 세션 받아오기
+    const [sessionEmail, setSessionEmail] = useState(null);
+    const [sessionNickname, setSessionNickname] = useState(null);
+
+
+
+    useEffect(() => {
+        const sessionData = async () => {
+            const response = await axios.get('/api/session');
+            if(response.data === ""){
+                setSessionEmail(null);
+                setSessionNickname(null);
+            }else{
+                setSessionEmail(response.data[0].mememail);
+                setSessionNickname(response.data[0].nickname);
+            }
+        };
+        sessionData();
+    }, []);
+
+
     document.body.style = "background: #f5f5f5;";
     let {num} = useParams();
 
@@ -95,6 +117,7 @@ const BlogsDetail = () => {
     const [category, setCategory] = useState("");
     const [photo_url, setPhoto_url] = useState("");
     const [memname, setMemname] = useState("");
+    const [mememail, setMememail] = useState("");
     const [createdTime, setCreatedTime] = useState("");
     const [tags, setTags] = useState([]);
     const [title, setTitle] = useState("");
@@ -106,6 +129,7 @@ const BlogsDetail = () => {
                 setPhoto_url(response.data[0]["photo_url"]);
                 setMemname(response.data[0]["memname"]);
                 setCategory(response.data[1]["classification"]);
+                setMememail(response.data[0]["mememail"]);
 
                 setCreatedTime(response.data[1]["createdTime"].substring(0, 16).replace(/-/g, ".").replace("T", " "));
                 if(response.data[1]["tags"] !== ""){
@@ -119,6 +143,17 @@ const BlogsDetail = () => {
         };
         blogData();
     }, [num]);
+
+    // 블로그 삭제하기
+    const handleBlogDelete = async () => {
+        const ques = window.confirm("정말로 삭제하시겠습니까?");
+        if(ques){
+            const response = await axios.get(`/api/delete/${num}`);
+            if(response.data !== ""){
+                window.location.href = "/blog";
+            }
+        }
+    }
 
 
     // 태그 뿌리기  
@@ -155,21 +190,28 @@ const BlogsDetail = () => {
                         </MyImgBox>
                         <MemName className='ms-3'>{memname}</MemName>
                     </span>
-                    <span className='position-relative'>
-                        <Button className='mb-2' onClick={handleUtilButton}><RxDotsVertical/></Button>
-                        {
-                            isUtil ? 
-                            (<Util className='border bg-white rounded'>
-                                <ul>
-                                    <li><UtilButton className='text-secondary'><span>수정하기</span><HiOutlinePencil/></UtilButton></li>
-                                    <li><UtilButton className='text-danger'><span>삭제하기</span><HiOutlineTrash/></UtilButton></li>
-                                </ul>
-                            </Util>)
-                            :
+                    {
+                        sessionEmail !== mememail ?
                             (<></>)
-                        }
-                        
-                    </span>
+                            :
+                            (
+                                <span className='position-relative'>
+                                <Button className='mb-2' onClick={handleUtilButton}><RxDotsVertical/></Button>
+                                        {
+                                            isUtil ?
+                                                (<Util className='border bg-white rounded'>
+                                                    <ul>
+                                                        <li><Link to={`/blog/modify/${num}`} className=' d-flex justify-content-between align-items-center text-secondary text-decoration-none' style={{padding: "10px"}}><span>수정하기</span><HiOutlinePencil/></Link></li>
+                                                        <li><UtilButton onClick={handleBlogDelete} className='text-danger'><span>삭제하기</span><HiOutlineTrash/></UtilButton></li>
+                                                    </ul>
+                                                </Util>)
+                                                :
+                                                (<></>)
+                                        }
+                                </span>
+                            )
+                    }
+
                 </Col>
             </Row>
             <Row>
@@ -185,7 +227,7 @@ const BlogsDetail = () => {
             <hr />
                 {/* comment */}
             <Row>
-                <Comment num={num}/>
+                <Comment num={num} sessionEmail={sessionEmail} sessionNickname={sessionNickname}/>
             </Row>
         </Container>
         <Footer/>
